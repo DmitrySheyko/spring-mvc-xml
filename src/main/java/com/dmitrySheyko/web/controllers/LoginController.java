@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/login")
 public class LoginController {
 
-    private Logger logger = Logger.getLogger(LoginController.class);
+    private final Logger logger = Logger.getLogger(LoginController.class);
 
-    private LoginService loginService;
+    private final LoginService loginService;
 
     @Autowired
     public LoginController(LoginService loginService) {
@@ -26,20 +26,20 @@ public class LoginController {
     }
 
     @GetMapping()
-    public String login(Model model){
-        logger.info("GET method");
+    public String login(Model model) {
+        logger.info("Request for show login page");
         model.addAttribute("loginForm", new LoginForm());
         return "login_page";
     }
 
     @PostMapping("/auth")
-    public String authenticate(LoginForm loginform){
-        if(loginService.authenticate(loginform)) {
-            logger.info("Log Ok");
+    public String authenticate(LoginForm loginform) {
+        if (loginService.authenticate(loginform)) {
+            logger.info("Success login by user id=" + loginform.getUsername());
             return "redirect:/books/shelf";
-        } else{
-            logger.info("Log fail");
-           return "redirect:/login";
+        } else {
+            logger.info("Fail login by user id=" + loginform.getUsername());
+            return "redirect:/login";
         }
     }
 

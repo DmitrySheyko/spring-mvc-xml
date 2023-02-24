@@ -1,6 +1,6 @@
 package com.dmitrySheyko.web.controllers;
 
-import com.dmitrySheyko.app.BookService;
+import com.dmitrySheyko.app.services.BookService;
 import com.dmitrySheyko.web.dto.Book;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class BookShelfController {
 
     @GetMapping("/shelf")
     public String books(Model model) {
-        logger.info("Get bookshelf");
+        logger.info("Request for show book_shelf page");
         model.addAttribute("book", new Book());
         model.addAttribute("bookList", bookService.getAllBooks());
         return "book_shelf";
@@ -34,19 +34,21 @@ public class BookShelfController {
     @PostMapping("/save")
     public String saveBook(Book book) {
         bookService.save(book);
-        logger.info("Current repository size: " + bookService.getAllBooks().size());
+        logger.info("Book saved. Current repository size:=" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 
     @PostMapping("/remove")
     public String removeBook(@RequestParam(value = "bookIdToRemove") Integer bookIdToRemove) {
         bookService.removeBookId(bookIdToRemove);
+        logger.info("Book deleted by Id. Current repository size:=" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 
-    @PostMapping("/remove")
-    public String removeBook(@RequestParam(value = "regex") String regex) {
-        bookService.removeBookByRegex(regex);
+    @PostMapping("/removeByRegex")
+    public String removeBook(@RequestParam(value = "queryRegex") String regex) {
+        bookService.removeBooksByRegex(regex);
+        logger.info("Book deleted by regex Current repository size:=" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 

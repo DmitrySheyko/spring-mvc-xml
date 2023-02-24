@@ -9,8 +9,8 @@ public class LoginService {
 
     private final Logger logger = Logger.getLogger(LoginService.class);
 
-    public boolean authenticate (LoginForm loginForm){
-        logger.info("try authenticate");
+    public boolean authenticate(LoginForm loginForm) {
+        logger.info("Attempt of authentication in loginService");
         return loginForm.getUsername().equals("root") && loginForm.getPassword().equals("123");
     }
 
