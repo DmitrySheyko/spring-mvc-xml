@@ -17,7 +17,7 @@ public class BookService {
     private final Logger logger = Logger.getLogger(BookService.class);
 
     @Autowired
-    public BookService(BookRepository<Book> bookRepo) {
+    public BookService(BookRepository bookRepo) {
         this.bookRepo = bookRepo;
     }
 
@@ -34,7 +34,7 @@ public class BookService {
         }
     }
 
-    public void removeBookId(Integer bookIdToRemove) {
+    public void removeBookId(String bookIdToRemove) {
         logger.info("Attempt of removing book by id in bookService");
         if (isBookIdCorrect(bookIdToRemove)) {
             bookRepo.removeItemById(bookIdToRemove);
@@ -68,8 +68,8 @@ public class BookService {
         return size != null && size >= 0;
     }
 
-    private boolean isBookIdCorrect(Integer bookId) {
-        return (bookId != null && bookId > 0);
+    private boolean isBookIdCorrect(String bookId) {
+        return (bookId != null);
     }
 
     private boolean isRegexCorrect(String regex) {
@@ -79,4 +79,13 @@ public class BookService {
                 !StringUtils.isEmptyOrWhitespace(searchParameters[1]) &&
                 !StringUtils.isEmptyOrWhitespace(searchParameters[2]);
     }
+
+    private void defaultInit() {
+        logger.info("default INIT in bookService");
+    }
+
+    private void defaultDestroy() {
+        logger.info("default DESTROY in bookService");
+    }
+
 }

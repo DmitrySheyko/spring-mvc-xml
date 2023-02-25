@@ -1,12 +1,12 @@
 package com.dmitrySheyko.web.dto;
 
 public class Book {
-    private Integer id;
+    private String id;
     private String author;
     private String title;
     private Integer size;
 
-    public Book(Integer id, String author, String title, Integer size) {
+    public Book(String id, String author, String title, Integer size) {
         this.id = id;
         this.author = author;
         this.title = title;
@@ -16,11 +16,11 @@ public class Book {
     public Book() {
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

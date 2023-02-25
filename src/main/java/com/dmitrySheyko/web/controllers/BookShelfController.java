@@ -34,21 +34,21 @@ public class BookShelfController {
     @PostMapping("/save")
     public String saveBook(Book book) {
         bookService.save(book);
-        logger.info("Book saved. Current repository size:=" + bookService.getAllBooks().size());
+        logger.info("Book saved. Current repository size=" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 
     @PostMapping("/remove")
-    public String removeBook(@RequestParam(value = "bookIdToRemove") Integer bookIdToRemove) {
+    public String removeBook(@RequestParam(value = "bookIdToRemove") String bookIdToRemove) {
         bookService.removeBookId(bookIdToRemove);
-        logger.info("Book deleted by Id. Current repository size:=" + bookService.getAllBooks().size());
+        logger.info("Book deleted by Id. Current repository size=" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 
     @PostMapping("/removeByRegex")
-    public String removeBook(@RequestParam(value = "queryRegex") String regex) {
+    public String removeBookByRegex (@RequestParam(value = "queryRegex") String regex) {
         bookService.removeBooksByRegex(regex);
-        logger.info("Book deleted by regex Current repository size:=" + bookService.getAllBooks().size());
+        logger.info("Book deleted by regex Current repository size=" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 

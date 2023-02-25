@@ -1,38 +1,43 @@
 package com.dmitrySheyko.app.repositories;
 
+import com.dmitrySheyko.app.IdProvider;
 import com.dmitrySheyko.web.dto.Book;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class BookRepository<T> implements ProjectRepository<Book> {
+public class BookRepository implements ProjectRepository<Book>, ApplicationContextAware {
 
     private final Logger logger = Logger.getLogger(BookRepository.class);
     private final List<Book> repo = new ArrayList<>();
+    private ApplicationContext context;
 
     @Override
     public List<Book> retrieveAll() {
-        return repo;
+        return new ArrayList<>(repo);
     }
 
     @Override
     public void store(Book book) {
-        book.setId(book.hashCode());
+        book.setId(context.getBean(IdProvider.class).provideId(book));
         logger.info("In bookRepository successfully saved book id=" + book.getId());
         repo.add(book);
     }
 
     @Override
-    public void removeItemById(Integer bookIdToRemove) {
+    public void removeItemById(String bookIdToRemove) {
         for (Book book : retrieveAll()) {
             if (book.getId().equals(bookIdToRemove)) {
+                repo.remove(book);
                 logger.info("In bookRepository successfully deleted book id=" + bookIdToRemove);
             }
         }
-        logger.info("In bookRepository false deletion of book id=" + bookIdToRemove);
     }
 
     @Override
@@ -63,4 +68,16 @@ public class BookRepository<T> implements ProjectRepository<Book> {
         logger.info("In bookRepository successfully completed deletion by regex=");
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
+    }
+
+    public void defaultInit() {
+        logger.info("default init in book repo");
+    }
+
+    public void defaultDestroy() {
+        logger.info("default destroy in book repo");
+    }
 }
