@@ -3,6 +3,7 @@ package com.dmitrySheyko.app.services;
 import com.dmitrySheyko.app.repositories.BookRepository;
 import com.dmitrySheyko.app.repositories.ProjectRepository;
 import com.dmitrySheyko.web.dto.Book;
+import com.dmitrySheyko.web.dto.BookIdToRemove;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,6 +2,7 @@ package com.dmitrySheyko.web.controllers;
 
 import com.dmitrySheyko.app.services.BookService;
 import com.dmitrySheyko.web.dto.Book;
+import com.dmitrySheyko.web.dto.BookIdToRemove;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ public class BookShelfController {
     public String books(Model model) {
         logger.info("Request for show book_shelf page");
         model.addAttribute("book", new Book());
+        model.addAttribute("bookIdToRemove", new BookIdToRemove());
         model.addAttribute("bookList", bookService.getAllBooks());
         return "book_shelf";
     }
@@ -34,13 +36,13 @@ public class BookShelfController {
     @PostMapping("/save")
     public String saveBook(Book book) {
         bookService.save(book);
-        logger.info("Book saved. Current repository size=" + bookService.getAllBooks().size());
+        logger.info("Book saved. Current repository size =" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 
     @PostMapping("/remove")
-    public String removeBook(@RequestParam(value = "bookIdToRemove") String bookIdToRemove) {
-        bookService.removeBookId(bookIdToRemove);
+    public String removeBook(BookIdToRemove bookIdToRemove) {
+        bookService.removeBookId(bookIdToRemove.getId());
         logger.info("Book deleted by Id. Current repository size=" + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }

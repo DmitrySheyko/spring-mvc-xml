@@ -1,5 +1,6 @@
 package com.dmitrySheyko.web.controllers;
 
+import com.dmitrySheyko.app.exceptions.BookShelfLoginException;
 import com.dmitrySheyko.app.services.LoginService;
 import com.dmitrySheyko.web.dto.LoginForm;
 import org.apache.log4j.Logger;
@@ -27,19 +28,19 @@ public class LoginController {
 
     @GetMapping()
     public String login(Model model) {
-        logger.info("Request for show login page");
+        logger.info(" ");
         model.addAttribute("loginForm", new LoginForm());
         return "login_page";
     }
 
     @PostMapping("/auth")
-    public String authenticate(LoginForm loginform) {
+    public String authenticate(LoginForm loginform) throws BookShelfLoginException {
         if (loginService.authenticate(loginform)) {
             logger.info("Success login by user id=" + loginform.getUsername());
             return "redirect:/books/shelf";
         } else {
             logger.info("Fail login by user id=" + loginform.getUsername());
-            return "redirect:/login";
+            throw new BookShelfLoginException("Invalid username or password");
         }
     }
 
